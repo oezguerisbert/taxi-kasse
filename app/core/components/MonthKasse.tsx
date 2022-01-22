@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { format, getDay, getDaysInMonth } from "date-fns";
-import { CSSObject } from "@emotion/react";
+import { de } from "date-fns/locale";
 
 interface MonthKasseProps {
   month: string;
@@ -12,8 +12,8 @@ const MonthKasse: FC<MonthKasseProps> = ({ month, year }) => {
   const daysOfMonth = Array.from({ length: getDaysInMonth(monthYearStamp) }).map((_, day) => {
     const theDay = new Date(+year, +month, day + 1);
     return {
-      dayName: format(theDay, "EEE"),
-      monthNameCut: format(theDay, "dd. MMM"),
+      dayName: format(theDay, "EEE", { locale: de }),
+      monthNameCut: format(theDay, "dd. MMM", { locale: de }),
     };
   });
   const thdStyles = {
@@ -64,7 +64,7 @@ const MonthKasse: FC<MonthKasseProps> = ({ month, year }) => {
               Monat
             </th>
             <th style={thdStyles} colSpan={4}>
-              {format(monthYearStamp, "MMMM")} {format(monthYearStamp, "yyyy")}
+              {format(monthYearStamp, "MMMM", { locale: de })} {format(monthYearStamp, "yyyy", { locale: de })}
             </th>
           </tr>
         </thead>
