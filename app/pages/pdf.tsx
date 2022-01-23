@@ -11,7 +11,7 @@ class PDFPage extends React.Component {
 
     let buffer;
     if (month) {
-      buffer = await componentToPDFBuffer(<MonthKasse month={month} year={year} />, format);
+      buffer = await componentToPDFBuffer(<MonthKasse month={month} clean year={year} />, format);
     } else {
       buffer = await componentToPDFBuffer(<YearKasse year={year} />, format);
     }

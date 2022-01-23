@@ -5,9 +5,10 @@ import { de } from "date-fns/locale";
 interface MonthKasseProps {
   month: string;
   year: string;
+  clean?: boolean;
 }
 
-const MonthKasse: FC<MonthKasseProps> = ({ month, year }) => {
+const MonthKasse: FC<MonthKasseProps> = ({ month, year, clean = false }) => {
   const monthYearStamp = new Date(+year, +month);
   const daysOfMonth = Array.from({ length: getDaysInMonth(monthYearStamp) }).map((_, day) => {
     const theDay = new Date(+year, +month, day + 1);
@@ -54,7 +55,7 @@ const MonthKasse: FC<MonthKasseProps> = ({ month, year }) => {
     <div
       style={{
         width: "100%",
-        pageBreakAfter: +month < 11 ? "left" : "avoid",
+        pageBreakAfter: !clean ? "left" : "avoid",
       }}
     >
       <table style={{ width: "100%", borderCollapse: "collapse", borderSpacing: 0, borderColor: "black" }}>
