@@ -10,8 +10,9 @@ const Year: BlitzPage = () => {
   // const router = useRouter();
   const createOrDownloadPDF = async () => {
     if (typeof window !== "undefined") {
-      const response = await axios.get(`/pdf?year=${year}&format=A4`, { responseType: "blob" });
-      window.open(URL.createObjectURL(response.data));
+      axios.get(`/pdf?year=${year}&format=A4`, { responseType: "blob" }).then((response) => {
+        window.open(URL.createObjectURL(response.data));
+      });
     }
   };
   const fullYear = Array.from({ length: 12 });

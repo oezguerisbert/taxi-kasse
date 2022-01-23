@@ -15,7 +15,6 @@ class PDFPage extends React.Component {
     } else {
       buffer = await componentToPDFBuffer(<YearKasse year={year} />, format);
     }
-
     // with this header, your browser will prompt you to download the file
     // without this header, your browse will open the pdf directly
     res.setHeader("Content-disposition", `attachment; filename="TagesKasse_${month ? month + "_" : ""}${year}.pdf`);
