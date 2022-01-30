@@ -11,7 +11,12 @@ const Year: BlitzPage = () => {
   const createOrDownloadPDF = async () => {
     if (typeof window !== "undefined") {
       axios.get(`/pdf?year=${year}&format=A4`, { responseType: "blob" }).then((response) => {
-        window.open(URL.createObjectURL(response.data));
+        const blob = new Blob([response.data], { type: "application/pdf" });
+        const link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        link.download = `year.pdf`;
+        link.click();
+        // window.open(URL.createObjectURL(response.data));
       });
     }
   };

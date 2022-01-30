@@ -26,7 +26,11 @@ const Month: FC<MonthProps> = ({ month, year }) => {
   const createOrDownloadPdf = async () => {
     if (typeof window !== "undefined") {
       const response = await axios.get(`/pdf?month=${month}&year=${year}&format=A4`, { responseType: "blob" });
-      window.open(URL.createObjectURL(response.data));
+      const blob = new Blob([response.data], { type: "application/pdf" });
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `${month}.pdf`;
+      link.click();
     }
   };
 

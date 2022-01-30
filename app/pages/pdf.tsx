@@ -2,6 +2,12 @@ import React from "react";
 import MonthKasse from "../core/components/MonthKasse";
 import YearKasse from "../core/components/YearKasse";
 import { componentToPDFBuffer } from "../core/utils/htmlToPDF";
+import fs from "fs";
+import path from "path";
+
+const isDev = process.env.NODE_ENV === "development";
+
+const filePath = path.resolve(process.cwd(), "public/pdfs");
 
 class PDFPage extends React.Component {
   static async getInitialProps({ req, res, query }) {
@@ -11,9 +17,19 @@ class PDFPage extends React.Component {
 
     let buffer;
     if (month) {
-      buffer = await componentToPDFBuffer(<MonthKasse month={month} clean year={year} />, format);
+      buffer = isDev
+        ? await componentToPDFBuffer(<MonthKasse month={month} clean year={year} />, format)
+        : (() => {
+            const pdfBuffer = fs.readFileSync(path.join(filePath, `${year}/${month}.pdf`));
+            return pdfBuffer;
+          })();
     } else {
-      buffer = await componentToPDFBuffer(<YearKasse year={year} />, format);
+      buffer = isDev
+        ? await componentToPDFBuffer(<YearKasse year={year} />, format)
+        : (() => {
+            const pdfBuffer = fs.readFileSync(path.join(filePath, `${year}/year.pdf`));
+            return pdfBuffer;
+          })();
     }
     // with this header, your browser will prompt you to download the file
     // without this header, your browse will open the pdf directly
