@@ -21,11 +21,16 @@ const monthNames = [
   "November",
   "Dezember",
 ];
+const isDev = process.env.NODE_ENV === "development";
+
 const Month: FC<MonthProps> = ({ month, year }) => {
   const router = useRouter();
   const createOrDownloadPdf = async () => {
     if (typeof window !== "undefined") {
-      const response = await axios.get(`/pdf?month=${month}&year=${year}&format=A4`, { responseType: "blob" });
+      const response = await axios.get(
+        isDev ? `/pdf?month=${month}&year=${year}&format=A4` : `/pdfs/${year}/${month}.pdf`,
+        { responseType: "blob" }
+      );
       const blob = new Blob([response.data], { type: "application/pdf" });
       const link = document.createElement("a");
       link.href = window.URL.createObjectURL(blob);

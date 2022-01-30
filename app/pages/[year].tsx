@@ -5,19 +5,23 @@ import axios from "axios";
 import { BlitzPage, useParam } from "blitz";
 import HomeIcon from "../core/components/HomeIcon";
 
+const isDev = process.env.NODE_ENV === "development";
+
 const Year: BlitzPage = () => {
   const year = useParam("year", "string");
   // const router = useRouter();
   const createOrDownloadPDF = async () => {
     if (typeof window !== "undefined") {
-      axios.get(`/pdf?year=${year}&format=A4`, { responseType: "blob" }).then((response) => {
-        const blob = new Blob([response.data], { type: "application/pdf" });
-        const link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        link.download = `year.pdf`;
-        link.click();
-        // window.open(URL.createObjectURL(response.data));
-      });
+      axios
+        .get(isDev ? `/pdf?year=${year}&format=A4` : `/pdfs/${year}/year.pdf`, { responseType: "blob" })
+        .then((response) => {
+          const blob = new Blob([response.data], { type: "application/pdf" });
+          const link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          link.download = `year.pdf`;
+          link.click();
+          // window.open(URL.createObjectURL(response.data));
+        });
     }
   };
   const fullYear = Array.from({ length: 12 });
